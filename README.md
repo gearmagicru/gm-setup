@@ -13,12 +13,13 @@ $ composer require gearmagicru/gm-setup
 
 или добавить в файл composer.json вашего проекта:
 ```
-    "require": {
-        "gearmagicru/gm-setup": "*"
-    }
+"require": {
+	"gearmagicru/gm-setup": "*"
+}
 ```
 
 После установки, вам необходимо будет добавить следующие файлы:
 - `/queries/tables.php`, таблицы используемые картой SQL запросов;
 - `/queries/variables.php`, идентификаторы (переменные) запроса.
+
 Эти файлы присутствуют в репозитории в качестве шаблонов, но не экспортируются.
