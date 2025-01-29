@@ -1,0 +1,112 @@
+<?php
+/**
+ * Макет страницы - шаг "Подключение к базе данных".
+ * 
+ * @author Anton Tivonenko <anton.tivonenko@gmail.com>
+ * @copyright Copyright (c) 2015 GearMagic Веб-студия
+ * @package gm.setup
+ * @since 1.0
+ * 
+ * @var \Gm\Installer\InstallerConfig $state
+ * @var \Gm\Setup\Setup $installer
+ * @var \Gm\Setup\NewChoice\StepAccount $step
+ * @var string $assets
+ * @var callable $t
+ */
+
+$server = $_SERVER['SERVER_NAME'] ?? 'localhost';
+?>
+<form class="form form-horizontal" action="#navbar" method="POST">
+    <input type="hidden" id="form-action" name="action" value="" />
+    <div class="form__title"><?= $t('Create a user account') ?></div>
+    <p><?= $t('At this stage, a Control panel user account is created with the "Super Administrator" user role') ?>.</p>
+    <p><?= $t('For a user with the "Super administrator" role, all installed components (modules, module extensions, widgets) are available with full access') ?>, 
+<?= $t('as well as the ability to add users and their roles') ?>.</p>
+    <p><?= $t('To access the Control Panel, you must specify the route (part of the URL path) without special characters (except for "-" and "_")') ?>. <?= $t("For example: 'admin' etc.") ?></p>
+    <p>&nbsp;</p>
+    <div class="form-wrap">
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="acRoute"><?= $t('Route to Control panel') ?> <span class="star">*</span> :</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="acRoute" name="acRoute" maxlength="255" value="<?= $state->acRoute ?? 'admin' ?>" required />
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="acEmail">E-mail <span class="star">*</span> :</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="acEmail" name="acEmail" maxlength="50" value="<?= $state->acEmail ?? 'admin@' . $server ?>" required />
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="acUsername"><?= $t('Username') ?> <span class="star">*</span> :</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="acUsername" name="acUsername" minlength="3" maxlength="50" value="<?= $state->acUsername ?? '' ?>" required />
+                <div class="subtitle"><?= $t('characters must be more than %s but less than %s', [3, 50]) ?></div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="acPassword"><?= $t('User password') ?> <span class="star">*</span> :</label>
+            <div class="col-sm-7">
+                <input type="password" class="form-control" id="acPassword" name="acPassword" minlength="8" maxlength="40" value="" required />
+                <div class="subtitle"><?= $t('characters must be more than %s but less than %s', [7, 40]) ?></div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="acPasswordCnf"><?= $t('Password confirmation') ?> <span class="star">*</span> :</label>
+            <div class="col-sm-7">
+                <input type="password" class="form-control" id="acPasswordCnf" name="acPasswordCnf" value="" required />
+            </div>
+        </div>
+
+        <h2 style="text-align: center;"><?= $t('Personal data') ?></h2>
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="acCallName"><?= $t('Call name') ?> <span class="star">*</span> :</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="acCallName" name="acCallName" minlength="3" maxlength="100" value="<?= $state->acCallName ?? $t('Admin') ?>" required />
+                <div class="subtitle"><?= $t('how they will address you, for example: sir Ivan Ivanovich') ?></div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="acFirstName"><?= $t('First name') ?> <span class="star">*</span> :</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="acFirstName" name="acFirstName"  maxlength="100" value="<?= $state->acFirstName ?? $t('Administrator') ?>" required />
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="acSecondName"><?= $t('Second name') ?> :</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="acSecondName" name="acSecondName" maxlength="100" value="<?= $state->acSecondName ?? '' ?>" />
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="acPatronymicName"><?= $t('Patronymic name') ?> :</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="acPatronymicName" name="acPatronymicName" maxlength="100" value="<?= $state->acPatronymicName ?? '' ?>" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-5"></div>
+            <div class="col-sm-7">
+                <div class="form__note"><span class="star">*</span> &mdash; <?= $t('required fields') ?></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5"></div>
+            <div class="col-sm-7">
+                <button type="submit" class="btn btn-default btn-lg btn-icon btn-icon_account" data-action="create" style="float:left"><?= $t('To create account') ?></button>
+            </div>
+        </div>
+    </div>
+    <?php if ($step->hasAction('create') && $step->noMessages()) : ?>
+    <div class="alert alert-success">
+        <?= $t('User account successfully created') ?>.
+    </div>
+    <?php endif ?>
+
+    <?= $step->showMessages() ?>
+
+    <div id="navbar" class="form__navbar">
+        <a class="btn btn-light btn-prev btn-lg" href="<?= $installer->makeUrl('new:info') ?>"><?= $t('Back') ?></a>
+    </div>
+</form>

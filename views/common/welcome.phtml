@@ -1,0 +1,49 @@
+<?php
+/**
+ * Макет страницы - шаг "Добро пожаловать".
+ * 
+ * @author Anton Tivonenko <anton.tivonenko@gmail.com>
+ * @copyright Copyright (c) 2015 GearMagic Веб-студия
+ * @package gm.setup
+ * @since 1.0
+ * 
+ * @var \Gm\Installer\InstallerConfig $state
+ * @var \Gm\Setup\CommonChoice\StepWelcome $step
+ * @var string $assets
+ * @var callable $t
+ */
+
+?>
+<form class="form" action="#navbar" method="POST">
+    <input type="hidden" id="form-action" name="action" value="" />
+    <input type="hidden" id="form-language" name="language" value="<?= $state->language ?? '' ?>" />
+    <div class="form__title"><?= $t('Welcome to the GearMagic installation') ?></div>
+    <p><?= $t('You will be guided through the entire installation process') ?>.</p>
+    <p><?= $t('Please click the «Next» button to continue') ?>.</p>
+    <p>&nbsp;</p>
+    <p><?= $t('Choose language') ?>:</p>
+    <div class="languages row">
+<?php foreach ($state->languages as $slug => $language) : ?>
+        <div class="languages-item<?= $slug === $state->language ? ' languages-item_active' : '' ?>" data-lang="<?= $slug ?>">
+            <div class="languages-item__title"><?= $language['shortName'] ?></div>
+            <div class="languages-item__name"><?= $language['common'] ?> <span><?= $language['tag'] ?></span></div>
+        </div>
+<?php endforeach ?>
+    </div>
+
+    <?= $step->showMessages() ?>
+
+    <div id="navbar" class="form__navbar">
+        <button type="submit" class="btn btn-default btn-next btn-lg" data-action="welcome"><?= $t('Next') ?></button>
+    </div>
+</form>
+
+<script>
+(function($) {
+    $('.languages-item').click(function() {
+        $('.languages-item').removeClass('languages-item_active');
+        $('#form-language').val($(this).attr('data-lang'));
+        $(this).addClass('languages-item_active');
+    });
+})(jQuery);
+</script>

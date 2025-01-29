@@ -1,0 +1,107 @@
+<?php
+/**
+ * Макет страницы - шаг "Подключение к базе данных".
+ * 
+ * @author Anton Tivonenko <anton.tivonenko@gmail.com>
+ * @copyright Copyright (c) 2015 GearMagic Веб-студия
+ * @package gm.setup
+ * @since 1.0
+ * 
+ * @var \Gm\Installer\InstallerConfig $state
+ * @var \Gm\Setup\Setup $installer
+ * @var \Gm\Setup\NewChoice\StepDb $step
+ * @var string $assets
+ * @var callable $t
+ */
+
+$dbDriver = $state->dbDriver ?? '';
+$dbCreated = $state->dbCreated ?? false;
+$dbConnected = $state->dbConnected ?? false;
+?>
+<form class="form form-horizontal" action="#navbar" method="POST">
+    <input type="hidden" id="form-action" name="action" value="" />
+    <div class="form__title"><?= $t('Database connection') ?></div>
+    <p><?= $t('Enter information to connect to your web application\'s database') ?>.</p>
+    <p><?= $t('If you don\'t already have a database, the installer will try to create one (unless the "%s" checkbox is selected)', [$t('the database is already created on the server')]) ?>.</p>
+    <p><?= $t('The process may fail depending on the database settings or if the database user has insufficient privileges') ?>.</p>
+    <p>&nbsp;</p>
+    <div class="form-wrap">
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="dbDriver"><?= $t('Database') ?> <span class="star">*</span> :</label>
+            <div class="col-sm-7">
+                <select class="form-select" id="dbDriver" name="dbDriver">
+                    <option selected value="MySqli"<?= $dbDriver === 'MySqli' ? ' selected' : '' ?>>MySQL</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="dbHost"><?= $t('Database server') ?> <span class="star">*</span> :</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="dbHost" name="dbHost" value="<?= $state->dbHost ?? 'localhost' ?>" required />
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="dbSchema"><?= $t('Database name') ?> <span class="star">*</span> :</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="dbSchema" name="dbSchema" value="<?= $state->dbSchema ?? '' ?>" required />
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="dbPort"><?= $t('Server port') ?> <span class="star">*</span> :</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="dbPort" name="dbPort" value="<?= $state->dbPort ?? '3306' ?>" required />
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="dbUsername"><?= $t('Database username') ?> <span class="star">*</span> :</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="dbUsername" name="dbUsername" value="<?= $state->dbUsername ?? '' ?>" required />
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="dbPassword"><?= $t('Database user password') ?> <span class="star">*</span> :</label>
+            <div class="col-sm-7">
+                <input type="password" class="form-control" id="dbPassword" name="dbPassword" value="" required />
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="dbTablePrefix"><?= $t('Table prefix') ?> <span class="star">*</span> :</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="dbTablePrefix" name="dbTablePrefix" value="<?= $state->dbTablePrefix ?? 'gm_' ?>" required />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5"></div>
+            <div class="form-check col-sm-7">
+                <input class="form-check-input" type="checkbox" id="dbCreated" name="dbCreated" <?= $dbCreated ? 'checked' : '' ?> />
+                <label class="form-check-label" for="dbCreated"><?= $t('the database is already created on the server') ?></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5"></div>
+            <div class="col-sm-7">
+                <div class="form__note"><span class="star">*</span> &mdash; <?= $t('required fields') ?></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5"></div>
+            <div class="col-sm-7">
+                <button type="submit" class="btn btn-default btn-lg btn-icon btn-icon_connect" data-action="test" style="float:left"><?= $t('Check connection') ?> <i class="fas fa-plug"></i></button>
+            </div>
+        </div>
+    </div>
+    <?php if ($step->hasAction('test') && $dbConnected) : ?>
+    <div class="alert alert-success">
+        <?= $t('Database server connection check completed successfully') ?>
+    </div>
+    <?php endif ?>
+
+    <?= $step->showMessages() ?>
+
+    <div id="navbar" class="form__navbar">
+        <a class="btn btn-light btn-prev btn-lg" href="<?= $installer->makeUrl('new:registration') ?>"><?= $t('Back') ?></a>
+<?php if ($step->hasAction('test') && $dbConnected) :  ?>
+        <a type="submit" class="btn btn-default btn-next btn-lg" href="<?= $installer->makeUrl('new:dbcharset') ?>"><?= $t('Next') ?></a>
+<?php endif ?>
+    </div>
+</form>

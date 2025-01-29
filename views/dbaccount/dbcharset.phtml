@@ -1,0 +1,87 @@
+<?php
+/**
+ * Макет страницы - шаг "Подключение к базе данных".
+ * 
+ * @author Anton Tivonenko <anton.tivonenko@gmail.com>
+ * @copyright Copyright (c) 2015 GearMagic Веб-студия
+ * @package gm.setup
+ * @since 1.0
+ * 
+ * @var \Gm\Installer\InstallerConfig $state
+ * @var \Gm\Setup\Setup $installer
+ * @var \Gm\Setup\DbAccountChoice\StepDbCharset $step
+ * @var string $assets
+ * @var callable $t
+ */
+
+$dbCharset = $state->dbCharset ?? 'utf8';
+$dbCollate = $state->dbCollate ?? 'utf8_general_ci';
+$dbSchema = $state->dbSchema ?? '';
+$dbConnectedCharset = $state->dbConnectedCharset ?? false;
+$dbCharsetUtf8 = $state->dbCharsetUtf8 ?? false;
+?>
+<form class="form form-horizontal" action="#navbar" method="POST">
+    <input type="hidden" id="form-action" name="action" value="" />
+    <div class="form__title"><?= $t('Selecting the connection encoding') ?></div>
+    <p><?= $t('Specify the encoding and collation for a correct connection to the database server') ?>.</p>
+    <p><?= $t('If you can\'t select the encoding and collation you want, then check "%s"', [$t('use default UTF8 encoding')]) ?>.</p>
+    <p><?= $t('The process may fail depending on the database settings or if the database user has insufficient privileges') ?>.</p>
+    <p>&nbsp;</p>
+<?php if ($state->dbConnected) : ?>
+    <div class="form-wrap">    
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="dbCharset"><?= $t('Charset') ?> :</label>
+            <div class="col-sm-7">
+                <select class="form-select" id="dbCharset" name="dbCharset">
+                    <?php foreach ($dbCharsets as $charset => $params) : ?>
+                    <option value="<?= $charset ?>"<?= $dbCharset === $charset ? ' selected' : '' ?>><?= $charset ?></option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="dbCollate"><?= $t('Collate') ?> :</label>
+            <div class="col-sm-7">
+                <select class="form-select" id="dbCollate" name="dbCollate">
+                    <?php foreach ($dbCollations as $collate => $params) : ?>
+                    <option value="<?= $collate ?>"<?= $dbCollate === $collate ? ' selected' : '' ?>><?= $collate ?></option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5"></div>
+            <div class="form-check col-sm-7">
+                <input class="form-check-input" type="checkbox" id="dbCharsetUtf8" name="dbCharsetUtf8" <?= $dbCharsetUtf8 ? 'checked' : '' ?> />
+                <label class="form-check-label" for="dbCharsetUtf8"><?= $t('use default UTF8 encoding') ?></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5"></div>
+            <div class="col-sm-7">
+                <div class="form__note"><span class="star">*</span> &mdash; <?= $t('required fields') ?></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5"></div>
+            <div class="col-sm-7">
+                <button type="submit" class="btn btn-default btn-lg btn-icon btn-icon_connect" data-action="test" style="float:left"><?= $t('Check connection') ?></button>
+            </div>
+        </div>
+    </div>
+<?php else : ?>
+    <div class="alert alert-warning"><?= $t('Attention! It is necessary in the previous step to select a database and make a connection') ?>.</div>
+<?php endif ?>
+<?php if ($step->hasAction('test') && $dbConnectedCharset) : ?>
+    <div class="alert alert-success"><?= $t('Database server connection check completed successfully') ?></div>
+<?php endif ?>
+
+    <?= $step->showMessages() ?>
+
+    <div id="navbar" class="form__navbar">
+        <a class="btn btn-light btn-prev btn-lg" href="<?= $installer->makeUrl('dbaccount:db') ?>"><?= $t('Back') ?></a>
+<?php if ($step->hasAction('test') && $dbConnectedCharset) :  ?>
+        <a type="submit" class="btn btn-default btn-next btn-lg" href="<?= $installer->makeUrl('dbaccount:checkout') ?>"><?= $t('Next') ?></a>
+<?php endif ?>
+    </div>
+</form>

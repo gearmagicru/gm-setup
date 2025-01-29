@@ -1,0 +1,80 @@
+<?php
+/**
+ * Макет страницы - шаг "Информация о веб-приложении".
+ * 
+ * @author Anton Tivonenko <anton.tivonenko@gmail.com>
+ * @copyright Copyright (c) 2015 GearMagic Веб-студия
+ * @package gm.setup
+ * @since 1.0
+ * 
+ * @var \Gm\Installer\InstallerConfig $state
+ * @var \Gm\Setup\Setup $installer
+ * @var \Gm\Setup\NewChoice\StepAccount $step
+ * @var string $assets
+ * @var callable $t
+ */
+
+// часовой пояс для текущего языка
+$localeTZ = $state->languages[$state->language ?? '']['timeZone'] ?? 'UTC';
+// часовой пояс сервера
+$dataTZ = $state->dataTimeZone ?? 'UTC';
+// часовой пояс по умолчанию
+$defaultTZ = $state->timeZone ?? $localeTZ;
+// название редакции
+$edition = $installer->getAppEdition();
+if ($edition)
+    $name = $state->language === 'ru' ? $edition['originalName'] : $edition['name'];
+else
+    $name = '';
+?>
+<form class="form form-horizontal" action="#navbar" method="POST">
+    <input type="hidden" id="form-action" name="action" value="" />
+    <div class="form__title"><?= $t('Web application information') ?></div>
+    <p><?= $t('At this installation step, you must specify the name and description used in the templates and on the pages of your web application') ?>.</p>
+    <p><?= $t('After installation, you can change or specify new values for each language') ?>.</p>
+    <p>&nbsp;</p>
+    <div class="form-wrap">
+        <div class="row">
+            <label class="col-form-label col-sm-3" for="pageTitle"><?= $t('Name') ?> <span class="star">*</span> :</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="pageTitle" name="pageTitle" maxlength="255" value="<?= $state->pageTitle ?? $name ?>" required />
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-form-label col-sm-3" for="pageDesc"><?= $t('Description') ?> <span class="star">*</span> :</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="pageDesc" name="pageDesc" maxlength="255" value="<?= $state->pageDesc ?? $name ?>" required />
+            </div>
+        </div>
+        <p><?= $t('The server\'s time zone will store data (taking into account the date and time) of users') ?>. 
+<?= $t('Storing data in the same time zone will allow you to synchronize user interactions') ?>. <?= $t('We recommend choosing: GMT (+00:00) UTC - Coordinated Universal Time') ?>.</p>
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="dataTimeZone"><?= $t('Server timezone') ?> <span class="star">*</span> :</label>
+            <div class="col-sm-7">
+                <select class="form-select" id="dataTimeZone" name="dataTimeZone">
+                    <?php foreach ($timezones as $timezone) : ?>
+                    <option value="<?= $timezone['timezone'] ?>"<?= $dataTZ === $timezone['timezone'] ? ' selected' : '' ?>><?= 'GMT (', $timezone['offsetTime'], ') ', $timezone['name'] ?></option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+        </div>
+        <p><?= $t('Default time zone, applies to users who do not have their own time zone specified') ?>. <?= $t('The date and time displayed in the application will correspond to this time zone') ?>.</p>
+        <div class="row">
+            <label class="col-form-label col-sm-5" for="timeZone"><?= $t('Default timezone') ?> <span class="star">*</span> :</label>
+            <div class="col-sm-7">
+                <select class="form-select" id="timeZone" name="timeZone">
+                    <?php foreach ($timezones as $timezone) : ?>
+                    <option value="<?= $timezone['timezone'] ?>"<?= $defaultTZ === $timezone['timezone'] ? ' selected' : '' ?>><?= 'GMT (', $timezone['offsetTime'], ') ', $timezone['name'] ?></option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <?= $step->showMessages() ?>
+
+    <div class="form__navbar">
+        <a class="btn btn-light btn-prev btn-lg" href="<?= $installer->makeUrl('new:assembly') ?>"><?= $t('Back') ?></a>
+        <button type="submit" class="btn btn-default btn-next btn-lg" data-action="info"><?= $t('Next') ?></button>
+    </div>
+</form>

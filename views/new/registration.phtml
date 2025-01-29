@@ -1,0 +1,50 @@
+<?php
+/**
+ * Макет страницы - шаг "Регистрация веб-приложения".
+ * 
+ * @author Anton Tivonenko <anton.tivonenko@gmail.com>
+ * @copyright Copyright (c) 2015 GearMagic Веб-студия
+ * @package gm.setup
+ * @since 1.0
+ * 
+ * @var string $licenseKey
+ * @var \Gm\Installer\InstallerConfig $state
+ * @var \Gm\Setup\Setup $installer
+ * @var \Gm\Setup\NewChoice\StepRegistration $step
+ * @var string $assets
+ * @var callable $t
+ */
+
+$liKeyAfter = ($state->licenseKeyAfter ?? false) ? 'checked' : '';
+$licenseKey = $state->licenseKey ?? '';
+?>
+<form class="form" class="form form-horizontal" action="" method="POST">
+    <input type="hidden" id="form-action" name="action" value="" />
+    <div class="form__title"><?= $t('Web application registration') ?></div>
+    <p><?= $t('A license key is required to receive updates and install new components via %s', ['<a href="http://marketplace.gearmagic.ru" target="_blank">' . $t('Marketplace') . '</a>']) ?>.</p>
+    <p><?= $t('If the key is not specified, then there will be restrictions on the operation of your web application') ?>.</p>
+    <p><?= $t('The license key can be registered and specified after the web application is installed') ?>.</p>
+    <p>&nbsp;</p>
+    <div class="form-wrap">
+        <div class="row">
+            <label class="col-form-label col-sm-4" for="licenseKey"><?= $t('License key') ?>:</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="licenseKey" name="licenseKey" placeholder="XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX" value="<?= $licenseKey ?>">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="form-check col-sm-8">
+                <input class="form-check-input" type="checkbox" id="licenseKeyAfter" name="licenseKeyAfter" <?= $liKeyAfter ?> />
+                <label class="form-check-label" for="licenseKeyAfter"><?= $t('specify license key after installation') ?></label>
+            </div>
+        </div>
+    </div>
+
+    <?= $step->showMessages() ?>
+
+    <div class="form__navbar">
+        <a class="btn btn-light btn-prev btn-lg" href="<?= $installer->makeUrl('license') ?>"><?= $t('Back') ?></a>
+        <button type="submit" class="btn btn-default btn-next btn-lg" data-action="registration"><?= $t('Next') ?></button>
+    </div>
+</form>

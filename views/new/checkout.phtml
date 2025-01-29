@@ -1,0 +1,77 @@
+<?php
+/**
+ * Макет страницы - шаг "Контроль доступа к файлам веб-приложения".
+ * 
+ * @author Anton Tivonenko <anton.tivonenko@gmail.com>
+ * @copyright Copyright (c) 2015 GearMagic Веб-студия
+ * @package gm.setup
+ * @since 1.0
+ * 
+ * @var array $checkout
+ * @var \Gm\Installer\InstallerConfig $state
+ * @var \Gm\Setup\Setup $installer
+ * @var \Gm\Setup\NewChoice\StepCheckout $step
+ * @var string $assets
+ * @var callable $t
+ */
+
+?>
+<form class="form form-horizontal" action="" method="POST">
+    <input type="hidden" id="form-action" name="action" value="" />
+    <div class="form__title"><?= $t('Web application files checkout') ?>.</div>
+    <p><?= $t('The files and directories of the web application must have the appropriate permissions') ?>. <?= $t('If the files or directories do not have the recommended permissions, the installer will not be able to create or modify the configuration files') ?>.</p>
+    <p><?= $t('You can set the recommended access rights using the file manager or the control panel of your hosting') ?>.</p>
+<?php if (OS_WINDOWS) : ?>
+    <p><?= $t('Since you are using Windows OS, file and directory permissions will not be checked') ?>.</p>
+<?php endif ?>
+    <p>&nbsp;</p>
+    <table class="table table-check">
+        <thead>
+            <tr>
+                <th scope="col"><?= $t('Directory / file name') ?></th>
+                <th scope="col"><?= $t('Permissions') ?></th>
+                <th scope="col"><?= $t('Exists') ?></th>
+            </tr>
+        </thead>
+        <tbody>
+<?php foreach ($checkout as $item) : ?>
+            <tr class="table-check__item<?= $item['messages'] ? ' table-check__item-message' : '' ?>">
+                <td>
+                    <div class="table-check__title"><?= $item['name'] ?></div>
+                    <div class="table-check__subtitle"><?= $item['fullname'] ?></div>
+                    <div class="table-check__desc"><?= $item['desc'] ?></div>
+                </td>
+                <td align="center"><?= $item['rperms'] ?></td>
+                <td align="center"><?= $item['perms'] ?></td>
+            </tr>
+    <?php if ($item['messages']) : ?>
+            <tr class="table-check__item"><td colspan="3"><?php $step->showMessages($item['messages']) ?></td></tr>
+    <?php endif ?>
+
+    <?php if ($item['items']) : foreach ($item['items'] as $child) : ?>
+            <tr class="table-check__item<?= $child['messages'] ? ' table-check__item-message' : '' ?> table-check__item-offset">
+                <td>
+                    <div class="table-check__title"><?= $child['name'] ?></div>
+                    <div class="table-check__subtitle"><?= $child['fullname'] ?></div>
+                    <div class="table-check__desc"><?= $child['desc'] ?></div>
+                </td>
+                <td align="center"><?= $item['rperms'] ?></td>
+                <td align="center"><?= $item['perms'] ?></td>
+            </tr>
+    <?php if ($child['messages']) : ?>
+            <tr class="table-check__item table-check__item-offset"><td colspan="3"><?php $step->showMessages($child['messages']) ?></td></tr>
+    <?php endif ?>
+    <?php endforeach; endif; ?>
+<?php endforeach ?>
+        </tbody>
+    </table>
+
+    <?= $step->showMessages() ?>
+
+    <div class="form__navbar">
+        <a class="btn btn-light btn-prev btn-lg" href="<?= $installer->makeUrl('new:dbcharset') ?>"><?= $t('Back') ?></a>
+<?php if ($step->isChecked()) : ?>
+        <button type="submit" class="btn btn-default btn-next btn-lg" data-action="next"><?= $t('Next') ?></button>
+<?php endif ?>
+    </div>
+</form>

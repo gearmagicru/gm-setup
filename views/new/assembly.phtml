@@ -1,0 +1,178 @@
+<?php
+/**
+ * Макет страницы - шаг "Контроль доступа к файлам веб-приложения".
+ * 
+ * @author Anton Tivonenko <anton.tivonenko@gmail.com>
+ * @copyright Copyright (c) 2015 GearMagic Веб-студия
+ * @package gm.setup
+ * @since 1.0
+ * 
+ * @var \Gm\Installer\InstallerConfig $state
+ * @var \Gm\Setup\Setup $installer
+ * @var \Gm\Setup\SetupStep $step
+ * @var string $assets
+ * @var bool $collapseWidgets
+ * @var bool $collapseModules
+ * @var bool $collapseExtensions
+ * @var callable $t
+ */
+
+$hasModules = sizeof($modules) > 0;
+$hasAssembly = $step->hasAction('assembly');
+$applyDemo = ($state->applyDemo ?? false) ? 'checked' : '';
+?>
+<form class="form form-horizontal" action="#navbar" method="POST">
+    <input type="hidden" id="form-action" name="action" value="" />
+    <div class="form__title"><?= $t('Building a web application edition') ?>.</div>
+    <p><?= $t('Edition assembly is the search and installation of components (modules, module extensions, widgets) from the application repository') ?>. <?= $t('Adding components to the database and updating configuration files') ?>.</p>
+    <p><?= $t('After searching for the components, click the "Install components" button') ?>. <?= $t('Installed components will be highlighted with green checkmarks') ?>.</p>
+    <p><?= $t('During the installation process, errors may occur due to the unstable operation of the web server') ?>.</p>
+    <p>&nbsp;</p>
+<?php if (!$step->editionMap->loaded) : ?>
+    <div class="alert alert-danger"><?= sprintf($t('Unable to load SQL query map file "%s"'), $step->editionMap->filename) ?>.</div>
+<?php return; endif; ?>
+<?php if (!$hasModules) : ?>
+    <div class="alert alert-danger"><?= $t('Unable to install, missing modules in repository') ?>.</div>
+<?php return; endif; ?>
+
+    <p><?= $t('The following components were found in the repository') ?>:</p>
+    <a class="header-collapse<?= !$collapseModules ? ' collapsed' : '' ?>" data-bs-toggle="collapse" href="#collapseModules" role="button" aria-expanded="<?= !$collapseModules ? 'true' : 'false' ?>" aria-controls="collapseModules"><?= $t('Application modules') ?> <span>(<?= sizeof($modules['items']) ?>)</span></a>
+<?php if ($modules['items']) : ?>
+    <div class="collapse<?= !$collapseModules ? ' show' : '' ?>" id="collapseModules">
+        <table class="table table-assembly">
+            <thead>
+                <tr>
+                    <th scope="col"><?= $t('Module name') ?></th>
+                    <th scope="col" width="60px"><?= $t('Installed') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+<?php foreach ($modules['items'] as $module) : ?>
+                <tr class="table-assembly__item<?= $module['assembled'] ? ' table-assembly__item--checked' : '' ?>">
+                    <td>
+                        <img class="table-assembly__icon" src="<?= $module['icon'] ?>" />
+                        <div class="table-assembly__title"><?= $module['name'] ?></div>
+                        <div class="table-assembly__desc"><?= $module['desc'] ?></div>
+<?php if ($module['message']) echo $step->showMessageAr($module['message']) ?>
+                    </td>
+                    <td></td>
+                </tr>
+<?php endforeach ?>
+            </tbody>
+        </table>
+    </div>
+<?php endif ?>
+
+    <a class="header-collapse<?= !$collapseExtensions ? ' collapsed' : '' ?>" data-bs-toggle="collapse" href="#collapseExt" role="button" aria-expanded="<?= !$collapseExtensions ? 'true' : 'false' ?>" aria-controls="collapseExt"><?= $t('Application module extensions') ?> <span>(<?= sizeof($extensions['items']) ?>)</span></a>
+<?php if ($extensions['items']) : ?>
+    <div class="collapse<?= !$collapseExtensions ? ' show' : '' ?>" id="collapseExt">
+        <table class="table table-assembly">
+            <thead>
+                <tr>
+                    <th scope="col"><?= $t('Module extension name') ?></th>
+                    <th scope="col" width="60px"><?= $t('Installed') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+<?php foreach ($extensions['items'] as $extension) : ?>
+                <tr class="table-assembly__item<?= $extension['assembled'] ? ' table-assembly__item--checked' : '' ?>">
+                    <td>
+                        <img class="table-assembly__icon" src="<?= $extension['icon'] ?>" />
+                        <div class="table-assembly__title"><?= $extension['name'] ?></div>
+                        <div class="table-assembly__desc"><?= $extension['desc'] ?></div>
+<?php if ($extension['message']) echo $step->showMessageAr($extension['message']) ?>
+                    </td>
+                    <td></td>
+                </tr>
+<?php endforeach ?>
+            </tbody>
+        </table>
+    </div>
+<?php endif ?>
+
+    <a class="header-collapse<?= !$collapseWidgets ? ' collapsed' : '' ?>" data-bs-toggle="collapse" href="#collapseWidgets" role="button" aria-expanded="<?= !$collapseWidgets ? 'true' : 'false' ?>" aria-controls="collapseWidgets"><?= $t('Application widgets') ?> <span>(<?= sizeof($widgets['items']) ?>)</span></a>
+<?php if ($widgets['items']) : ?>
+    <div class="collapse<?= !$collapseWidgets ? ' show' : '' ?>" id="collapseWidgets">
+        <table class="table table-assembly">
+            <thead>
+                <tr>
+                    <th scope="col"><?= $t('Widget name') ?></th>
+                    <th scope="col" width="60px"><?= $t('Installed') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+<?php foreach ($widgets['items'] as $widget) : ?>
+                <tr class="table-assembly__item<?= $widget['assembled'] ? ' table-assembly__item--checked' : '' ?>">
+                    <td>
+                        <img class="table-assembly__icon" src="<?= $widget['icon'] ?>" />
+                        <div class="table-assembly__title"><?= $widget['name'] ?></div>
+                        <div class="table-assembly__desc"><?= $widget['desc'] ?></div>
+<?php if ($widget['message']) echo $step->showMessageAr($widget['message']) ?>
+                    </td>
+                    <td></td>
+                </tr>
+<?php endforeach ?>
+            </tbody>
+        </table>
+    </div>
+<?php endif ?>
+
+<a class="header-collapse<?= !$collapsePlugins ? ' collapsed' : '' ?>" data-bs-toggle="collapse" href="#collapsePlugins" role="button" aria-expanded="<?= !$collapsePlugins ? 'true' : 'false' ?>" aria-controls="collapsePlugins"><?= $t('Application plugins') ?> <span>(<?= sizeof($plugins['items']) ?>)</span></a>
+<?php if ($plugins['items']) : ?>
+    <div class="collapse<?= !$collapsePlugins ? ' show' : '' ?>" id="collapsePlugins">
+        <table class="table table-assembly">
+            <thead>
+                <tr>
+                    <th scope="col"><?= $t('Plugin name') ?></th>
+                    <th scope="col" width="60px"><?= $t('Installed') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+<?php foreach ($plugins['items'] as $plugin) : ?>
+                <tr class="table-assembly__item<?= $plugin['assembled'] ? ' table-assembly__item--checked' : '' ?>">
+                    <td>
+                        <img class="table-assembly__icon" src="<?= $plugin['icon'] ?>" />
+                        <div class="table-assembly__title"><?= $plugin['name'] ?></div>
+                        <div class="table-assembly__desc"><?= $plugin['desc'] ?></div>
+<?php if ($plugin['message']) echo $step->showMessageAr($plugin['message']) ?>
+                    </td>
+                    <td></td>
+                </tr>
+<?php endforeach ?>
+            </tbody>
+        </table>
+    </div>
+<?php endif ?>
+
+<?php if (!$hasAssembly && $step->noMessages()) : ?>
+    <p>&nbsp;</p>
+    <p><?= $t('To populate your web application with data, you need to check the box below') ?>. 
+    <?= $t('Filling with demo data depends on the edition of your web application') ?>.</p>
+    <div class="row">
+            <div class="form-check col-sm-8">
+                <input class="form-check-input" type="checkbox" id="applyDemo" name="applyDemo" <?= $applyDemo ?> />
+                <label class="form-check-label" for="applyDemo"><?= $t('Apply demo data') ?></label>
+            </div>
+        </div>
+<?php endif ?>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <button type="submit" class="btn btn-default btn-lg btn-icon btn-icon_install" data-action="assembly"><?= $t('Install components') ?></button>
+        </div>
+    </div>
+
+<?php if ($hasAssembly && $step->noMessages()) : ?>
+    <input type="hidden" name="applyDemo" value="<?= $applyDemo === 'checked' ? 'on' : '' ?>">
+    <div class="alert alert-success"><?= $t('BUILD Succeeded') ?>.</div>
+<?php endif ?>
+
+    <?= $step->showMessage() ?>
+
+    <div id="navbar" class="form__navbar">
+        <a class="btn btn-light btn-prev btn-lg" href="<?= $installer->makeUrl('new:checkout') ?>"><?= $t('Back') ?></a>
+<?php if ($hasAssembly && $step->noMessages()) : ?>
+        <a class="btn btn-default btn-next btn-lg" href="<?= $installer->makeUrl('new:info') ?>"><?= $t('Next') ?></a>
+<?php endif ?>
+    </div>
+</form>

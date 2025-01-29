@@ -1,0 +1,128 @@
+<?php
+/**
+ * Макет главной страницы установщика.
+ * 
+ * @author Anton Tivonenko <anton.tivonenko@gmail.com>
+ * @copyright Copyright (c) 2015 GearMagic Веб-студия
+ * @package gm.setup
+ * @since 1.0
+ * 
+ * @var \Gm\Installer\InstallerConfig $config
+ * @var \Gm\Installer\InstallerSteps $steps
+ * @var \Gm\Setup\SetupStep $step
+ * @var string $assets
+ * @var string $content
+ * @var array $edition
+ * @var callable $t
+ */
+
+$itemActive = 'menu__item menu__item--active';
+$itemPassed = 'menu__item menu__item--checked';
+$itemDefault = 'menu__item menu__item';
+?>
+<!DOCTYPE HTML>
+<html lang="<?= $config->language ?>">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?= $t('Setup'), ' - ', $step->getTitle() ?></title>
+    <!-- favorite icon -->
+    <link href="<?= $assets ?>/ico/favicon.ico" rel="icon" sizes="any">
+    <link type="image/svg+xml" href="<?= $assets ?>/ico/favicon.svg" rel="icon">
+    <link type="image/png" href="<?= $assets ?>/ico/favicon.ico" rel="icon" sizes="16x16">
+    <link type="image/png" href="<?= $assets ?>/ico/icon-32x32.png" rel="icon" sizes="32x32">
+    <link type="image/png" href="<?= $assets ?>/ico/icon-96x96.png" rel="icon" sizes="96x96">
+    <link type="image/png" href="<?= $assets ?>/ico/icon-192x192.png" rel="icon" sizes="192x192">
+    <link type="image/png" href="<?= $assets ?>/ico/icon-194x194.png" rel="icon" sizes="194x194">
+    <link type="image/png" href="<?= $assets ?>/ico/apple-touch-icon-57x57.png" rel="apple-touch-icon" sizes="57x57">
+    <link type="image/png" href="<?= $assets ?>/ico/apple-touch-icon-60x60.png" rel="apple-touch-icon" sizes="60x60">
+    <link type="image/png" href="<?= $assets ?>/ico/apple-touch-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
+    <link type="image/png" href="<?= $assets ?>/ico/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76">
+    <link type="image/png" href="<?= $assets ?>/ico/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
+    <link type="image/png" href="<?= $assets ?>/ico/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120">
+    <link type="image/png" href="<?= $assets ?>/ico/apple-touch-icon-144x144.png" rel="apple-touch-icon" sizes="144x144">
+    <link type="image/png" href="<?= $assets ?>/ico/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152">
+    <link type="image/png" href="<?= $assets ?>/ico/apple-touch-icon-180x180.png" rel="apple-touch-icon" sizes="180x180">
+    <meta name="msapplication-TileColor" content="#217346">
+    <meta name="msapplication-TileImage" content="<?= $assets ?>/ico/mstile-144x144.png">
+    <meta name="theme-color" content="#217346">
+    <script src="<?= $assets ?>/vendors/jquery/jquery-3.7.0.slim.min.js"></script>
+    <script src="<?= $assets ?>/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="<?= $assets ?>/vendors/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?= $assets ?>/css/style.css" />
+</head>
+
+<body>
+<header>
+        <div class="wrapper">
+            <div class="header__logo">Gear<span>Magic</span></div>
+            <div class="header__app">«<?= isset($version) ? ($config->language === 'ru' ? $version->originalName : $version->name) : '' ?>»</div>
+            <div class="header__title"><?= $t('edition') ?>: 
+<?php if ($edition): ?>
+                <span class="header__version"><?= $config->language === 'ru' ? $edition['originalName'] : $edition['name'] ?><span><?= $edition['number'] ?? '' ?></span></span>
+<?php endif ?>
+            </div>
+        </div>
+    </header>
+
+    <div class="wrapper">
+        <div class="panel">
+            <div id="mask" class="mask">
+                <div class="mask__wrap">
+                    <div class="mask__loader"></div>
+                </div>
+            </div>
+            <div class="menu">
+                <ul class="menu__items">
+                    <li class="<?= $steps->getStepState('common:welcome', $itemActive, $itemPassed, $itemDefault) ?>"><?= $t('Welcome') ?></li>
+                    <li class="<?= $steps->getStepState('common:check', $itemActive, $itemPassed, $itemDefault) ?>"><?= $t('Check') ?></li>
+                    <li class="<?= $steps->getStepState('common:choice', $itemActive, $itemPassed, $itemDefault) ?>"><?= $t('Setup selection') ?></li>
+<?php if ($steps->isChoice('new')) : ?>
+                    <li class="<?= $steps->getStepState('new:license', $itemActive, $itemPassed, $itemDefault) ?>"><?= $t('License') ?></li>
+                    <li class="<?= $steps->getStepState('new:registration', $itemActive, $itemPassed, $itemDefault) ?>"><?= $t('Registration') ?></li>
+                    <li class="<?= $steps->getStepState('new:db', $itemActive, $itemPassed, $itemDefault) ?>"><?= $t('Database selection') ?></li>
+                    <li class="<?= $steps->getStepState('new:dbcharset', $itemActive, $itemPassed, $itemDefault) ?>"><?= $t('Charset selection') ?></li>
+                    <li class="<?= $steps->getStepState('new:checkout', $itemActive, $itemPassed, $itemDefault) ?>"><?= $t('Checkout') ?></li>
+                    <li class="<?= $steps->getStepState('new:assembly', $itemActive, $itemPassed, $itemDefault) ?>"><?= $t('Assembly') ?></li>
+                    <li class="<?= $steps->getStepState('new:info', $itemActive, $itemPassed, $itemDefault) ?>"><?= $t('Information') ?></li>
+                    <li class="<?= $steps->getStepState('new:account', $itemActive, $itemPassed, $itemDefault) ?>"><?= $t('Create an account') ?></li>
+                    <li class="<?= $steps->getStepState('new:finish', $itemActive, $itemPassed, $itemDefault) ?>"><?= $t('Finish') ?></li>
+<?php elseif ($steps->isChoice('dbaccount')) : ?>
+                    <li class="<?= $steps->getStepState('dbaccount:db', $itemActive, $itemPassed, $itemDefault) ?>"><?= $t('Database selection') ?></li>
+                    <li class="<?= $steps->getStepState('dbaccount:dbcharset', $itemActive, $itemPassed, $itemDefault) ?>"><?= $t('Charset selection') ?></li>
+                    <li class="<?= $steps->getStepState('dbaccount:checkout', $itemActive, $itemPassed, $itemDefault) ?>"><?= $t('Checkout') ?></li>
+                    <li class="<?= $steps->getStepState('dbaccount:finish', $itemActive, $itemPassed, $itemDefault) ?>"><?= $t('Finish') ?></li>
+<?php elseif ($steps->isChoice('repair')) : ?>
+                    <li class="<?= $steps->getStepState('repair:update', $itemActive, $itemPassed, $itemDefault) ?>"><?= $t('Updating') ?></li>
+                    <li class="<?= $steps->getStepState('repair:finish', $itemActive, $itemPassed, $itemDefault) ?>"><?= $t('Finish') ?></li>
+<?php else : ?>
+                    <li class="menu__item menu__item--more"></li>
+<?php endif ?>
+                </ul>
+            </div>
+            <div class="content">
+                <div class="content__header"><?= $t('Web application installer') ?></div>
+                <?= $content ?>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function($) {
+            $('.form__navbar a').click(function() { $('#mask').show(); });
+            $('button').click(function() {
+                let validate = true;
+                $('form :input[required]').each(function (index, item) {
+                    if ($(item).val() == '') validate = false;
+                });
+                if (validate) {
+                    $('#mask').show();
+                    $('#form-action').val($(this).attr('data-action'));
+                }
+            });
+        })(jQuery);
+    </script>
+</body>
+
+</html>

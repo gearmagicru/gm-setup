@@ -1,0 +1,57 @@
+    <?php
+/**
+ * Макет страницы - шаг "Выбор установки".
+ * 
+ * @author Anton Tivonenko <anton.tivonenko@gmail.com>
+ * @copyright Copyright (c) 2015 GearMagic Веб-студия
+ * @package gm.setup
+ * @since 1.0
+ * 
+ * @var \Gm\Installer\InstallerConfig $state
+ * @var \Gm\Setup\Setup $installer
+ * @var \Gm\Setup\CommonChoice\StepChoice $step
+ * @var string $assets
+ * @var callable $t
+ */
+
+?>
+<form class="form" action="" method="POST">
+    <input type="hidden" id="form-action" name="action" value="" />
+    <input type="hidden" id="form-choice" name="choice" value="" />
+    <div class="form__title"><?= $t('Installation selection') ?></div>
+    <p><?= $t('Select installation type') ?>:</p>
+    <div class="choice">
+        <div class="choice-item choice-item_install" data-choice="new">
+            <div class="choice-item__title"><?= $t('New installation') ?></div>
+            <div class="choice-item__desc"><?= $t('Install the GearMagic web application') ?></div>
+            <div class="choice-item__comment"><?= $t('Attention! This choice may overwrite the previous installed version of the GearMagic Web application') ?>.</div>
+        </div>
+        <div class="choice-item choice-item_db" data-choice="dbaccount">
+            <div class="choice-item__title"><?= $t('Update database connection settings') ?></div>
+            <div class="choice-item__desc"><?= $t('If in your web application, you only need to change the database connection settings') ?></div>
+            <div class="choice-item__comment"></div>
+        </div>
+        <div class="choice-item choice-item_repair" data-choice="repair">
+            <div class="choice-item__title"><?= $t('Update the settings of installed components') ?></div>
+            <div class="choice-item__desc"><?= $t('If the configuration files of installed components or their routing have been deleted or damaged, use this item') ?></div>
+            <div class="choice-item__comment"></div>
+        </div>
+    </div>
+
+    <?= $step->showMessages() ?>
+
+    <div class="form__navbar">
+        <a class="btn btn-light btn-prev btn-lg" href="<?= $installer->makeUrl('check') ?>"><?= $t('Back') ?></a>
+        <button type="submit" class="btn btn-default btn-next btn-lg" data-action="choice"><?= $t('Next') ?></button>
+    </div>
+</form>
+
+<script>
+(function($) {
+    $('.choice-item').click(function() {
+        $('.choice-item').removeClass('choice-item--active');
+        $('#form-choice').val($(this).attr('data-choice'));
+        $(this).addClass('choice-item--active');
+    });
+})(jQuery);
+</script>

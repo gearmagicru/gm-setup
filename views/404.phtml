@@ -1,0 +1,73 @@
+<?php
+/**
+ * Макет страницы 404.
+ * 
+ * @author Anton Tivonenko <anton.tivonenko@gmail.com>
+ * @copyright Copyright (c) 2015 GearMagic Веб-студия
+ * @package gm.setup
+ * @since 1.0
+ * 
+ * @var \Gm\Installer\InstallerConfig $config
+ * @var string $assets
+ * @var array $edition
+ * @var callable $t
+ */
+
+?>
+<!DOCTYPE HTML>
+<html lang="<?= $config->language ?>">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Установщик | Installer - GearMagic</title>
+    <!-- favorite icon -->
+    <link href="<?= $assets ?>/ico/favicon.ico" rel="icon" sizes="any">
+    <link type="image/svg+xml" href="<?= $assets ?>/ico/favicon.svg" rel="icon">
+    <link type="image/png" href="<?= $assets ?>/ico/favicon.ico" rel="icon" sizes="16x16">
+    <link type="image/png" href="<?= $assets ?>/ico/icon-32x32.png" rel="icon" sizes="32x32">
+    <link type="image/png" href="<?= $assets ?>/ico/icon-96x96.png" rel="icon" sizes="96x96">
+    <link type="image/png" href="<?= $assets ?>/ico/icon-192x192.png" rel="icon" sizes="192x192">
+    <link type="image/png" href="<?= $assets ?>/ico/icon-194x194.png" rel="icon" sizes="194x194">
+    <link type="image/png" href="<?= $assets ?>/ico/apple-touch-icon-57x57.png" rel="apple-touch-icon" sizes="57x57">
+    <link type="image/png" href="<?= $assets ?>/ico/apple-touch-icon-60x60.png" rel="apple-touch-icon" sizes="60x60">
+    <link type="image/png" href="<?= $assets ?>/ico/apple-touch-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
+    <link type="image/png" href="<?= $assets ?>/ico/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76">
+    <link type="image/png" href="<?= $assets ?>/ico/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
+    <link type="image/png" href="<?= $assets ?>/ico/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120">
+    <link type="image/png" href="<?= $assets ?>/ico/apple-touch-icon-144x144.png" rel="apple-touch-icon" sizes="144x144">
+    <link type="image/png" href="<?= $assets ?>/ico/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152">
+    <link type="image/png" href="<?= $assets ?>/ico/apple-touch-icon-180x180.png" rel="apple-touch-icon" sizes="180x180">
+    <meta name="msapplication-TileColor" content="#217346">
+    <meta name="msapplication-TileImage" content="<?= $assets ?>/ico/mstile-144x144.png">
+    <meta name="theme-color" content="#217346">
+    <link rel="stylesheet" href="<?= $assets ?>/vendors/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="<?= $assets ?>/css/style.css" />
+</head>
+
+<body>
+    <header>
+        <div class="wrapper">
+            <div class="header__logo">Gear<span>Magic</span></div>
+            <div class="header__app">«<?= isset($version) ? $version->name : '' ?>»</div>
+            <div class="header__title">редакция | edition: 
+<?php if ($edition): ?>
+            <span class="header__version"><?= $edition['name'] ?><span><?= $edition['number'] ?? '' ?></span></span>
+<?php endif ?>
+            </div>
+        </div>
+    </header>
+
+    <div class="wrapper">
+        <div class="content">
+            <div class="content__header">Установщик | Installer</div>
+            <p>Для установки веб-приложения перейдите по ссылке <a href="/setup"><b>установить</b></a>.</p>
+            <p>Если вы не нуждаетесь в установщике или веб-приложение уже установлено, тогда удалите каталог "/modules/gm/gm.setup/<b>.setup</b>".</p>
+            <p>&nbsp;</p>
+            <p>To install the web application follow the link <a href="/setup"><b>install</b></a>.</p>
+            <p>If you don't need an installer or the web application is already installed then remove the directory "/modules/gm/gm.setup/<b>.setup</b>".</p>
+        </div>
+    </div>
+</body>
+
+</html>

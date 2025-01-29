@@ -1,0 +1,39 @@
+<?php
+/**
+ * Макет страницы - шаг "Завершение установки".
+ * 
+ * @author Anton Tivonenko <anton.tivonenko@gmail.com>
+ * @copyright Copyright (c) 2015 GearMagic Веб-студия
+ * @package gm.setup
+ * @since 1.0
+ * 
+ * @var \Gm\Installer\InstallerConfig $state
+ * @var \Gm\Setup\Setup $installer
+ * @var \Gm\Setup\DbAccountChoice\StepFinish $step
+ * @var string $assets
+ * @var callable $t
+ */
+
+?>
+<form class="form" class="form form-horizontal" action="" method="POST">
+    <input type="hidden" id="form-action" name="action" value="" />
+    <div class="form__title"><?= $t('Completing the installation') ?></div>
+    <p><?= $t('Database configuration file updated successfully') ?>.</p>
+    <?php if ($state->canGotoSite) : ?>
+    <p><?= $t('After the installation is completed, it is recommended to delete the installer directory "%s" or follow the links: "%s", "%s"', [$installer->getPath(), $t('Go to Control panel'), $t('Go to Website')]) ?>.</p>
+<?php else : ?>
+    <p><?= $t('After the installation is completed, it is recommended to delete the installer directory "%s" or follow the links "%s"', [$installer->getPath(), $t('Go to Control panel')]) ?>.</p>
+<?php endif ?>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+
+    <?= $step->showMessages() ?>
+
+    <div class="form__navbar">
+        <a class="btn btn-light btn-prev btn-lg" href="<?= $installer->makeUrl('welcome') ?>"><?= $t('Start over') ?></a>
+        <button type="submit" class="btn btn-default btn-lg btn-icon btn-icon_panel" data-action="gotopanel"><?= $t('Go to Control panel') ?></button>
+<?php if ($state->canGotoSite) : ?>
+        <button type="submit" class="btn btn-default btn-lg btn-icon btn-icon_site" style="margin-right:5px" data-action="gotosite"><?= $t('Go to Website') ?></button> 
+<?php endif ?>
+    </div>
+</form>
