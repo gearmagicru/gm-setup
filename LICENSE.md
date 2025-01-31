@@ -1,6 +1,7 @@
 MIT License
 
-Copyright (c) 2025 Anton Tivonenko
+Copyright (c) 2015 Веб-студия GearMagic (https://gearmagic.ru/)
+Copyright (c) 2015 Anton Tivonenko (anton.tivonenko@gmail.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
