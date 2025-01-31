@@ -6,6 +6,7 @@
 # Текстовые файлы
 *.php  text
 *.phtml text
+*.html text
 *.css  text
 *.svg  text
 *.js   text
