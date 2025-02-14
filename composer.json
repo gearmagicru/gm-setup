@@ -1,11 +1,7 @@
 {
     "name": "gearmagicru/gm-setup",
     "description": "GearMagic Web Application installer",
-    "keywords": [
-        "gm",
-        "gearmagic",
-        "installer"
-    ],
+    "keywords": ["gearmagic", "gm framework", "installer"],
     "homepage": "https://apps.gearmagic.ru/component/gm-setup",
     "type": "component",
     "license": "MIT",
