@@ -7,8 +7,7 @@
 [![Author](https://img.shields.io/badge/author-anton.tivonenko@gmail.com-blue.svg)](mailto:anton.tivonenko@gmail)
 [![Source Code](https://img.shields.io/badge/source-gearmagicru/gm--setup-blue.svg)](https://github.com/gearmagicru/gm-setup)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/gearmagicru/gm-setup/blob/master/LICENSE)
-![Component type: module](https://img.shields.io/badge/component%20type-module-green.svg)
-![Component ID: gm-setup](https://img.shields.io/badge/component%20id-gm.setup-green.svg)
+![Component type: module](https://img.shields.io/badge/framework%20component-installer-green.svg)
 ![php 8.2+](https://img.shields.io/badge/php-min%208.2-red.svg)
 
 ## Установка
