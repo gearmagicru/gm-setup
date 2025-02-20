@@ -260,9 +260,16 @@ class Components extends BaseObject
         /** @var array $searchFolders Папки компонентов */
         $searchFolders = $this->installer->getSearchFolders();
 
+        /** @var int $uniqid 
+         * Уникальный идентификатор записи в базе данных для каждого 
+         * компонента, он должен совпадать с порядковым номером массива $componentId.
+         * Если компонент не найден, то идентификатор записи пропускается!!!
+         */
+        $uniqid = 0;
         // поиск файлов конфигурации установки $filename
         $rows = $items = $perms = [];
         foreach ($componentsId as $rowId => $componentId) {
+            $uniqid++;
             $pathExists = false;
             foreach ($searchFolders as $folder) {
                 $path = $basePath . $folder . DS . $componentId;
@@ -338,16 +345,16 @@ class Components extends BaseObject
             ];
 
             if ($component === self::CMP_MODULE)
-                $row = $this->getModuleRow($install);
+                $row = $this->getModuleRow($install, $uniqid);
             else
             if ($component === self::CMP_EXTENSION)
-                $row = $this->getExtensionRow($install);
+                $row = $this->getExtensionRow($install, $uniqid);
             else
             if ($component === self::CMP_WIDGET)
-                $row = $this->getWidgetRow($install);
+                $row = $this->getWidgetRow($install, $uniqid);
             else
             if ($component === self::CMP_PLUGIN)
-                $row = $this->getPluginRow($install);
+                $row = $this->getPluginRow($install, $uniqid);
             else
                 $row = null;
 
@@ -396,15 +403,14 @@ class Components extends BaseObject
      * Возвращает атрибуты записи модуля для добавления в базу данных.
      *
      * @param array $config Параметры конфигурации модуля.
+     * @param int $uniqid Уникальный идентификатор записи в базе данных.
      * 
      * @return array
      */
-    public function getModuleRow(array $config): array
+    public function getModuleRow(array $config, int $uniqid): array
     {
-        static $uniqid = 1;
-
         return [
-            'id'           => $uniqid++,
+            'id'           => $uniqid,
             'module_id'    => $config['id'],
             'module_use'   => $config['use'] ?? null,
             'name'         => $config['name'],
@@ -426,13 +432,12 @@ class Components extends BaseObject
      * Возвращает атрибуты записи расширения модуля для добавления в базу данных.
      *
      * @param array $config Параметры конфигурации расширения модуля.
+     * @param int $uniqid Уникальный идентификатор записи в базе данных.
      * 
      * @return array
      */
-    public function getExtensionRow(array $config): array
+    public function getExtensionRow(array $config, int $uniqid): array
     {
-        static $uniqid = 1;
-
         // расширение не может существовать без модуля
         if (isset($config['moduleId']))
             $module = $this->modules['rows'][$config['moduleId']] ?? null;
@@ -440,7 +445,7 @@ class Components extends BaseObject
             $module = null;
         // index, desk и menu неизвестно для чего
         return [
-            'id'           => $uniqid++,
+            'id'           => $uniqid,
             'module_id'    => $module ? $module['id'] : null,
             'extension_id' => $config['id'],
             'name'         => $config['name'],
@@ -462,15 +467,14 @@ class Components extends BaseObject
      * Возвращает атрибуты записи виджета для добавления в базу данных.
      *
      * @param array $config Параметры конфигурации виджета.
+     * @param int $uniqid Уникальный идентификатор записи в базе данных.
      * 
      * @return array
      */
-    public function getWidgetRow(array $config): array
+    public function getWidgetRow(array $config, int $uniqid): array
     {
-        static $uniqid = 1;
-
         return [
-            'id'           => $uniqid++,
+            'id'           => $uniqid,
             'widget_id'    => $config['id'],
             'widget_use'   => $config['use'],
             'category'     => $config['category'] ?? null,
@@ -489,15 +493,14 @@ class Components extends BaseObject
      * Возвращает атрибуты записи плагина для добавления в базу данных.
      *
      * @param array $config Параметры конфигурации плагина.
+     * @param int $uniqid Уникальный идентификатор записи в базе данных.
      * 
      * @return array
      */
-    public function getPluginRow(array $config): array
+    public function getPluginRow(array $config, int $uniqid): array
     {
-        static $uniqid = 1;
-
         return [
-            'id'           => $uniqid++,
+            'id'           => $uniqid,
             'plugin_id'    => $config['id'],
             'owner_id'     => $config['ownerId'],
             'category'     => $config['category'] ?? null,
