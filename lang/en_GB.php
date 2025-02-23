@@ -292,6 +292,21 @@ return [
     'Errors occurred during the installation of module extensions' => 'Errors occurred during the installation of module extensions.',
     'Errors occurred while installing widgets' => 'Errors occurred while installing widgets.',
 
+    // NewChoice\StepDesign: макет страницы
+    'Design' => 'Design',
+    'Web application design' => 'Web application design',
+    'Select a design template for your website and Control Panel' => 'Select a design template for your website and Control Panel',
+    'The templates differ in their external design and basic settings' => 'The templates differ in their external design and basic settings',
+    'Website template' => 'Template <b>Website</b>',
+    'Panel Control template' => 'Template <b>Panel Control</b>',
+    'If you want to populate your web application with sample template data, you need to check the box below' =>
+        'If you want to populate your web application with sample template data, you need to check the box below',
+    'Not all templates have demo data' => 'Not all templates have demo data',
+    'Apply template demo data' => 'Apply template demo data',
+    // NewChoice\StepDesign: ошибки
+    'You need to select the website theme' => 'You need to select the website theme.',
+    'You need to select the Control Panel theme' => 'You need to select the Control Panel theme.',
+
     // NewChoice\StepInfo: макет страницы
     'Information' => 'Information',
     'Web application information' => 'Web application information',
