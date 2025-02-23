@@ -172,7 +172,7 @@ $applyDemo = ($state->applyDemo ?? false) ? 'checked' : '';
     <div id="navbar" class="form__navbar">
         <a class="btn btn-light btn-prev btn-lg" href="<?= $installer->makeUrl('new:checkout') ?>"><?= $t('Back') ?></a>
 <?php if ($hasAssembly && $step->noMessages()) : ?>
-        <a class="btn btn-default btn-next btn-lg" href="<?= $installer->makeUrl('new:info') ?>"><?= $t('Next') ?></a>
+        <a class="btn btn-default btn-next btn-lg" href="<?= $installer->makeUrl('new:design') ?>"><?= $t('Next') ?></a>
 <?php endif ?>
     </div>
 </form>

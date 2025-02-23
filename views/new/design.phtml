@@ -1,0 +1,78 @@
+<?php
+/**
+ * Макет страницы - шаг "Дизайе".
+ * 
+ * @author Anton Tivonenko <anton.tivonenko@gmail.com>
+ * @copyright Copyright (c) 2015 GearMagic Веб-студия
+ * @package gm.setup
+ * @since 1.0
+ * 
+ * @var \Gm\Installer\InstallerConfig $state
+ * @var \Gm\Setup\CommonChoice\StepDesign $step
+ * @var string $assets
+ * @var callable $t
+ */
+
+$applyThemeDemo = ($state->applyThemeDemo ?? false) ? 'checked' : '';
+?>
+<form class="form" action="#navbar" method="POST">
+    <input type="hidden" id="form-action" name="action" value="" />
+    <input type="hidden" id="form-feTheme" name="feTheme" value="<?= $state->feTheme ?? '' ?>" />
+    <input type="hidden" id="form-beTheme" name="beTheme" value="<?= $state->beTheme ?? '' ?>" />
+    <div class="form__title"><?= $t('Web application design') ?></div>
+    <p><?= $t('Select a design template for your website and Control Panel') ?>.</p>
+    <p><?= $t('The templates differ in their external design and basic settings') ?>.</p>
+    <p>&nbsp;</p>
+    <p><?= $t('Website template') ?>:</p>
+    <div id="feThemes" class="themes row">
+<?php foreach ($state->feThemes as $theme) : ?>
+        <div class="themes-item<?= $theme['name'] === $state->feTheme ? ' themes-item_active' : '' ?>" data-theme="<?= $theme['name'] ?>">
+            <div class="themes-item__title"><?= $theme['name'] ?></div>
+            <div class="themes-item__desk"><?= $theme['description'] ?></div>
+            <img src="<?=  $theme['thumb'] ?>">
+        </div>
+<?php endforeach ?>
+    </div>
+
+    <p><?= $t('Panel Control template') ?>:</p>
+    <div id="beThemes" class="themes row">
+<?php foreach ($state->beThemes as $theme) : ?>
+        <div class="themes-item<?= $theme['name'] === $state->beTheme ? ' themes-item_active' : '' ?>" data-theme="<?= $theme['name'] ?>">
+            <div class="themes-item__title"><?= $theme['name'] ?></div>
+            <div class="themes-item__desk"><?= $theme['description'] ?></div>
+            <img src="<?=  $theme['thumb'] ?>">
+        </div>
+<?php endforeach ?>
+    </div>
+
+    <p><?= $t('If you want to populate your web application with sample template data, you need to check the box below') ?>.</p>
+    <p><?= $t('Not all templates have demo data') ?>.</p>
+    <div class="row">
+        <div class="form-check col-sm-8">
+            <input class="form-check-input" type="checkbox" id="applyThemeDemo" name="applyThemeDemo" <?= $applyThemeDemo ?> />
+            <label class="form-check-label" for="applyThemeDemo"><?= $t('Apply template demo data') ?></label>
+        </div>
+    </div>
+
+    <?= $step->showMessages() ?>
+
+    <div id="navbar" class="form__navbar">
+        <a class="btn btn-light btn-prev btn-lg" href="<?= $installer->makeUrl('new:assembly') ?>"><?= $t('Back') ?></a>
+        <button type="submit" class="btn btn-default btn-next btn-lg" data-action="design"><?= $t('Next') ?></button>
+    </div>
+</form>
+
+<script>
+(function($) {
+    $('#feThemes .themes-item').click(function() {
+        $('#feThemes .themes-item').removeClass('themes-item_active');
+        $('#form-feTheme').val($(this).attr('data-theme'));
+        $(this).addClass('themes-item_active');
+    });
+    $('#beThemes .themes-item').click(function() {
+        $('#beThemes .themes-item').removeClass('themes-item_active');
+        $('#form-beTheme').val($(this).attr('data-theme'));
+        $(this).addClass('themes-item_active');
+    });
+})(jQuery);
+</script>
