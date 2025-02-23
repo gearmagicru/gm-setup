@@ -210,6 +210,47 @@ h1, h2, h3, h4 { font-weight: 300; }
     font-weight: bold;
 }
 
+/* Выбор темы */
+.themes { margin: 10px; }
+.themes-item {
+    position: relative;
+    display: block;
+    min-height: 76px;
+
+    margin: 5px;
+    color: #515151;
+    border: 1px solid #DCDCDC;
+    background: #FBFBFB;
+    border-radius: 4px;
+    padding: 20px 20px 20px 80px;
+}
+.themes-item img {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 64px;
+    height: 64px;
+}
+.themes-item:hover {
+    cursor: pointer;
+    background: #e1eae5;
+}
+.themes-item_active {
+    border: 2px solid #217346;
+    background: #e1eae5;
+}
+.themes-item__title {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.themes-item__desk {
+    font-size: 14px;
+}
+.themes-item__name span {
+    font-weight: bold;
+}
+
 /* Сообщения */
 .alert {
     border-radius: 3px;
