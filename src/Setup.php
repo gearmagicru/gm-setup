@@ -54,6 +54,7 @@ class Setup extends Installer
                         'dbcharset'    => '\Gm\Setup\NewChoice\StepDbCharset',
                         'checkout'     => '\Gm\Setup\NewChoice\StepCheckout',
                         'assembly'     => '\Gm\Setup\NewChoice\StepAssembly',
+                        'design'       => '\Gm\Setup\NewChoice\StepDesign',
                         'info'         => '\Gm\Setup\NewChoice\StepInfo',
                         'account'      => '\Gm\Setup\NewChoice\StepAccount',
                         'finish'       => '\Gm\Setup\NewChoice\StepFinish'

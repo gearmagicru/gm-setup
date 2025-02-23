@@ -294,6 +294,21 @@ return [
     'Errors occurred during the installation of module extensions' => 'В процессе установки расширений модулей возникли ошибки.',
     'Errors occurred while installing widgets' => 'В процессе установки виджетов возникли ошибки.',
 
+    // NewChoice\StepDesign: макет страницы
+    'Design' => 'Дизайн',
+    'Web application design' => 'Дизайн веб-приложения',
+    'Select a design template for your website and Control Panel' => 'Выберите шаблон дизайна для сайта и Панели управления',
+    'The templates differ in their external design and basic settings' => 'Шаблоны отличаются внешним оформлением и базовыми настройками',
+    'Website template' => 'Шаблон <b>Сайта</b>',
+    'Panel Control template' => 'Шаблон <b>Панели управления</b>',
+    'If you want to populate your web application with sample template data, you need to check the box below' =>
+        'Если вы желаете наполнить ваше веб-приложение демонстрационными данными из шаблона, то вам необходимо установить флажок ниже',
+    'Not all templates have demo data' => 'Не все шаблоны имеют демонстрационные данные',
+    'Apply template demo data' => 'Применить демонстрационные данные шаблона',
+    // NewChoice\StepDesign: ошибки
+    'You need to select the website theme' => 'Вам необходимо выбрать шаблон сайта.',
+    'You need to select the Control Panel theme' => 'Вам необходимо выбрать шаблон Панели управления.',
+
     // NewChoice\StepInfo: макет страницы
     'Information' => 'Информация',
     'Web application information' => 'Информация о веб-приложение',
