@@ -303,6 +303,7 @@ return [
         'If you want to populate your web application with sample template data, you need to check the box below',
     'Not all templates have demo data' => 'Not all templates have demo data',
     'Apply template demo data' => 'Apply template demo data',
+    'there is demo data' => 'there is demo data',
     // NewChoice\StepDesign: ошибки
     'You need to select the website theme' => 'You need to select the website theme.',
     'You need to select the Control Panel theme' => 'You need to select the Control Panel theme.',

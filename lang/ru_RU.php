@@ -305,6 +305,7 @@ return [
         'Если вы желаете наполнить ваше веб-приложение демонстрационными данными из шаблона, то вам необходимо установить флажок ниже',
     'Not all templates have demo data' => 'Не все шаблоны имеют демонстрационные данные',
     'Apply template demo data' => 'Применить демонстрационные данные шаблона',
+    'there is demo data' => 'есть демонстрационные данные',
     // NewChoice\StepDesign: ошибки
     'You need to select the website theme' => 'Вам необходимо выбрать шаблон сайта.',
     'You need to select the Control Panel theme' => 'Вам необходимо выбрать шаблон Панели управления.',
