@@ -84,17 +84,55 @@ class StepDesign extends SetupStep
      * 
      * @return void
      */
-    protected function applyThemeDemo(): void
+    protected function applyThemeDemo(): bool
     {
         /** @var \Gm\Mvc\Application $app */
         $app = $this->installer->getApp();
 
-        /** @var BaseObject|null $model */
-        /*$model = $app->modules->getModel('Article1', 'gm.be.articles');
-        if ($model) {
-            $model->header = 'dddddddddddddddd';
-            $model->save();
-        }*/
+        /** @var null|\Gm\Theme\Theme $theme */
+        $theme = $app->createThemeBySide('frontend');
+        // если есть демоданные для сайта
+        if ($theme->hasPreview($this->state->feTheme)) {
+            $packageFile = $theme->getPreviewFilename($this->state->feTheme);
+
+            try {
+                $import = new \Gm\Import\Import();
+                $import->runPackage($packageFile);
+                /** @var \Gm\Import\Parser\AbstractParser $parser */
+                $parser = $import->getParser();
+                // если была ошибка при разборе
+                if ($parser->hasErrors()) {
+                    $this->addError($parser->getError());
+                    return false;
+                }
+            } catch (\Exception $e) {
+                $this->addError($e->getMessage());
+                return false;
+            }
+        }
+
+        /** @var null|\Gm\Theme\Theme $theme */
+        $theme = $app->createThemeBySide('backend');
+        // если есть демоданные для Панели управления
+        if ($theme->hasPreview($this->state->beTheme)) {
+            $packageFile = $theme->getPreviewFilename($this->state->beTheme);
+
+            try {
+                $import = new \Gm\Import\Import();
+                $import->runPackage($packageFile);
+                /** @var \Gm\Import\Parser\AbstractParser $parser */
+                $parser = $import->getParser();
+                // если была ошибка при разборе
+                if ($parser->hasErrors()) {
+                    $this->addError($parser->getError());
+                    return false;
+                }
+            } catch (\Exception $e) {
+                $this->addError($e->getMessage());
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -181,6 +219,10 @@ class StepDesign extends SetupStep
     public function designAction(): void
     {
         if ($this->validate()) {
+            // если применить демонстрационные данные шаблона
+            if ($this->state->applyThemeDemo) {
+                if (!$this->applyThemeDemo()) return;
+            }
             // создание файла конфигурации веб-приложения
             if ($this->createConfigFiles()) {
                 // отметить завершение шага
