@@ -216,8 +216,7 @@ h1, h2, h3, h4 { font-weight: 300; }
     position: relative;
     display: block;
     min-height: 76px;
-
-    margin: 5px;
+    margin: 5px 5px 10px 5px;
     color: #515151;
     border: 1px solid #DCDCDC;
     background: #FBFBFB;
@@ -244,12 +243,21 @@ h1, h2, h3, h4 { font-weight: 300; }
     font-weight: bold;
     margin-bottom: 5px;
 }
-.themes-item__desk {
-    font-size: 14px;
+.themes-item__desk { font-size: 14px; }
+.themes-item__demo {
+    position: absolute;
+    left: 78px;
+    bottom: -11px;
+    background: #DCDCDC;
+    padding: 5px 9px 5px 9px;
+    border-radius: 10px;
+    font-size: 13px;
 }
-.themes-item__name span {
-    font-weight: bold;
+.themes-item_active .themes-item__demo {
+    background: #198754;
+    color: #fff;
 }
+.themes-item__name span { font-weight: bold; }
 
 /* Сообщения */
 .alert {
