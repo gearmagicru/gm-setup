@@ -29,6 +29,9 @@ $applyThemeDemo = ($state->applyThemeDemo ?? false) ? 'checked' : '';
         <div class="themes-item<?= $theme['name'] === $state->feTheme ? ' themes-item_active' : '' ?>" data-theme="<?= $theme['name'] ?>">
             <div class="themes-item__title"><?= $theme['name'] ?></div>
             <div class="themes-item__desk"><?= $theme['description'] ?></div>
+<?php if ($theme['preview']): ?>
+            <div class="themes-item__demo"><?= $t('there is demo data') ?></div>
+<?php endif ?>
             <img src="<?=  $theme['thumb'] ?>">
         </div>
 <?php endforeach ?>
@@ -40,6 +43,9 @@ $applyThemeDemo = ($state->applyThemeDemo ?? false) ? 'checked' : '';
         <div class="themes-item<?= $theme['name'] === $state->beTheme ? ' themes-item_active' : '' ?>" data-theme="<?= $theme['name'] ?>">
             <div class="themes-item__title"><?= $theme['name'] ?></div>
             <div class="themes-item__desk"><?= $theme['description'] ?></div>
+<?php if ($theme['preview']): ?>
+            <div class="themes-item__demo"><?= $t('there is demo data') ?></div>
+<?php endif ?>
             <img src="<?=  $theme['thumb'] ?>">
         </div>
 <?php endforeach ?>
