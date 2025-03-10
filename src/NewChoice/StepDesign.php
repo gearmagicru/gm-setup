@@ -9,7 +9,6 @@
 
 namespace Gm\Setup\NewChoice;
 
-use Gm\Helper\Url;
 use Gm\Config\Config;
 use Gm\Setup\SetupStep;
 
@@ -61,6 +60,48 @@ class StepDesign extends SetupStep
     }
 
     /**
+     * Возвращает параметры для указанной темы Панели управления.
+     * 
+     * @param string $theme Имя выбранной темы.
+     * 
+     * @return array|false Возвращает значение `false` если параметры по указанной 
+     *     теме не найдены.
+     */
+    protected function getFeThemeParams(string $theme): array|false
+    {
+        if (empty($this->state->feThemes)) {
+            return false;
+        }
+        foreach ($this->state->feThemes as $params) {
+            if ($params['name'] === $theme) {
+                return $params;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Возвращает параметры для указанной темы сайта.
+     * 
+     * @param string $theme Имя выбранной темы.
+     * 
+     * @return array|false Возвращает значение `false` если параметры по указанной 
+     *     теме не найдены.
+     */
+    protected function getBeThemeParams(string $theme): array|false
+    {
+        if (empty($this->state->beThemes)) {
+            return false;
+        }
+        foreach ($this->state->beThemes as $params) {
+            if ($params['name'] === $theme) {
+                return $params;
+            }
+        }
+        return false;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function initParams(): void
@@ -91,6 +132,15 @@ class StepDesign extends SetupStep
 
         /** @var null|\Gm\Theme\Theme $theme */
         $theme = $app->createThemeBySide('frontend');
+        /** @var array|false Параметры выбранной темы $themeParams */
+        $themeParams = $this->getFeThemeParams($this->state->feTheme);
+        if ($themeParams === false) {
+            $this->addError('Unable to determine theme "' . $this->state->feTheme . '" parameters');
+            return false;
+        }
+        // т.к. возможно тема еще не установлена, то добавляем найденную тему
+        // в доступные (иначе методы $theme не будет работать)
+        $theme->addAvailable($this->state->feTheme, $themeParams);
         // если есть демоданные для сайта
         if ($theme->hasPreview($this->state->feTheme)) {
             $packageFile = $theme->getPreviewFilename($this->state->feTheme);
@@ -113,6 +163,15 @@ class StepDesign extends SetupStep
 
         /** @var null|\Gm\Theme\Theme $theme */
         $theme = $app->createThemeBySide('backend');
+        /** @var array|false Параметры выбранной темы $themeParams */
+        $themeParams = $this->getBeThemeParams($this->state->beTheme);
+        if ($themeParams === false) {
+            $this->addError('Unable to determine theme "' . $this->state->beTheme . '" parameters');
+            return false;
+        }
+        // т.к. возможно тема еще не установлена, то добавляем найденную тему
+        // в доступные (иначе методы $theme не будет работать)
+        $theme->addAvailable($this->state->beTheme, $themeParams);
         // если есть демоданные для Панели управления
         if ($theme->hasPreview($this->state->beTheme)) {
             $packageFile = $theme->getPreviewFilename($this->state->beTheme);
@@ -219,10 +278,11 @@ class StepDesign extends SetupStep
     public function designAction(): void
     {
         if ($this->validate()) {
-            // если применить демонстрационные данные шаблона
+            // если применяются демонстрационные данные шаблона
             if ($this->state->applyThemeDemo) {
                 if (!$this->applyThemeDemo()) return;
             }
+
             // создание файла конфигурации веб-приложения
             if ($this->createConfigFiles()) {
                 // отметить завершение шага
