@@ -117,7 +117,7 @@ class StepInfo extends SetupStep
             'titlePattern' => '%s - ' . $this->state->pageTitle,
             'title'        => $this->state->pageTitle, 
             'description'  => $this->state->pageDesc,
-            'keywords'     => $this->state->pageDesc,
+            'keywords'     => empty($this->state->pageKeywords) ? $this->state->pageDesc : $this->state->pageKeywords,
             'robots'       => 'index, follow'
         ];
     
