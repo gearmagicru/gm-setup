@@ -155,6 +155,19 @@ class StepDesign extends SetupStep
                     $this->addError($parser->getError());
                     return false;
                 }
+
+                /** @var array $package Атрибуты импортируемого пакета */
+                $package = $import->getPackage();
+                // если в пакете указаны свойства устанавливаемого веб-приложения
+                if (!empty($package['properties']['title'])) {
+                    $this->state->pageTitle = $package['properties']['title'];
+                }
+                if (!empty($package['properties']['description'])) {
+                    $this->state->pageDesc = $package['properties']['description'];
+                }
+                if (!empty($package['properties']['keywords'])) {
+                    $this->state->pageKeywords = $package['properties']['keywords'];
+                }
             } catch (\Exception $e) {
                 $this->addError($e->getMessage());
                 return false;
@@ -278,6 +291,13 @@ class StepDesign extends SetupStep
     public function designAction(): void
     {
         if ($this->validate()) {
+            // если ранее при установке применялись демонстрационные данные,
+            // то они могли содержать информация о веб-приложении, поэтому для
+            // следующего шага сбрасываем
+            $this->state->pageTitle = null;
+            $this->state->pageDesc = null;
+            $this->state->pageKeywords = null;
+
             // если применяются демонстрационные данные шаблона
             if ($this->state->applyThemeDemo) {
                 if (!$this->applyThemeDemo()) return;
